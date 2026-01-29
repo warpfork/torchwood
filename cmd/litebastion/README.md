@@ -22,6 +22,10 @@ acceptable client/witness key hashes.
             email address to register the ACME account with
     -host string
             host to obtain ACME certificate for
+    -tls-cert string
+            path to TLS certificate
+    -tls-key string
+            path to TLS private key
 
 Since litebastion needs to operate at a lower level than HTTPS on the witness
 side, it can't be behind a reverse proxy, and needs to configure its own TLS
@@ -29,6 +33,10 @@ certificate. Use the `-cache`, `-email`, and `-host` flags to configure the ACME
 client. The ALPN ACME challenge is used, so as long as the `-listen` port
 receives connections to the `-host` name at port 443, everything should just
 work.
+
+Alternatively, if both `-tls-cert` and `-tls-key` are set, ACME is disabled and
+the provided certificate and private key are used instead. The certificate and
+key are reloaded on SIGHUP.
 
     -listen-http [HOST:]PORT
             only accept HTTP requests at http://HOST:PORT or http://localhost:PORT
