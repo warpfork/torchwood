@@ -239,6 +239,14 @@ func pullLogs(db *sqlite.Conn, source string, verbose bool) {
 				}
 				continue
 			}
+			// Log is known but has no keys, warn.
+			if len(keys) == 0 {
+				log.Printf("Warning: log %q exists but is listed without any keys in the database.\n", origin)
+				log.Printf("The new key was not added automatically to avoid enabling a manually disabled log.\n")
+				log.Printf("  - new key:\n")
+				log.Printf("    - %q\n", vkey)
+				continue
+			}
 			// Key is different, warn.
 			log.Printf("Warning: log %q is listed with a different key than the one in the database.\n", origin)
 			log.Printf("  - existing keys:\n")
