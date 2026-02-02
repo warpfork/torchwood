@@ -28,6 +28,12 @@
 
 - The backends file is now allowed to be empty.
 
+- Added `-obscurity` flag to disable the `/logz` endpoint.
+
+### litewitness
+
+- Added `-obscurity` flag to disable the `/` and `/logz` endpoints.
+
 ### witnessctl
 
 - `add-key` now rejects duplicate keys.

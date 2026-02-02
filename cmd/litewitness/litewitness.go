@@ -44,6 +44,7 @@ var noListenFlag = flag.Bool("no-listen", false, "do not open any listening sock
 var keyFlag = flag.String("key", "", "SSH fingerprint (with SHA256: prefix) of the witness key")
 var bastionFlag = flag.String("bastion", "", "address of the bastion(s) to reverse proxy through, comma separated, the first online one is selected")
 var testCertFlag = flag.Bool("testcert", false, "use rootCA.pem for connections to the bastion")
+var obscurityFlag = flag.Bool("obscurity", false, "enable obscurity mode (disable / and /logz endpoints)")
 
 type ConnectionSet struct {
 	connections map[string]func() // connection => cancel func
@@ -129,8 +130,10 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", w)
-	mux.Handle("/logz", console)
-	mux.Handle("/{$}", indexHandler(w))
+	if !*obscurityFlag {
+		mux.Handle("/logz", console)
+		mux.Handle("/{$}", indexHandler(w))
+	}
 
 	srv := &http.Server{
 		Addr:         *listenFlag,

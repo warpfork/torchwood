@@ -19,6 +19,9 @@ waitfor localhost:7380
 # add-checkpoint
 exec hurl --test --error-format long add-checkpoint.hurl
 
+# check that / shows the log name
+exec hurl --test --error-format long index.hurl
+
 # check that litewitness shut down cleanly
 killall
 wait litewitness
@@ -199,3 +202,10 @@ QrtXrQZCCvpIgsSmOsah7HdICzMLLyDfxToMql9WTjY=
 HTTP 409
 [Asserts]
 body == "5\n"
+
+
+-- index.hurl --
+GET http://localhost:7380/
+HTTP 200
+[Asserts]
+body contains "sigsum.org/v1/tree/4d6d8825a6bb689d459628312889dfbb0bcd41b5211d9e1ce768b0ff0309e562"

@@ -38,6 +38,9 @@ Alternatively, if both `-tls-cert` and `-tls-key` are set, ACME is disabled and
 the provided certificate and private key are used instead. The certificate and
 key are reloaded on SIGHUP.
 
+    -obscurity
+            enable obscurity mode (disable / and /logz endpoints)
+
     -listen-http [HOST:]PORT
             only accept HTTP requests at http://HOST:PORT or http://localhost:PORT
 

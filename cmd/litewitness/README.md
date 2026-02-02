@@ -68,6 +68,16 @@ bastion flag is an optionally comma-separated list of bastions to try in order
 until one connects successfully. If the connection drops after establishing,
 litewitness exits.
 
+    -obscurity
+            enable obscurity mode (disable / and /logz endpoints)
+
+Note that the c2sp.org/tlog-witness protocol is not designed to keep the
+supported logs or their tree states secret. Moreover, litewitness has no access
+to any secrets (becuase the private key is in ssh-agent) except arguably the IP
+addresses of its clients (which are always redacted from /logz). Obscurity mode
+disables the `/` and `/logz` endpoints to make it harder to enumerate the logs
+known to the witness.
+
 ## witnessctl
 
 witnessctl is a CLI tool to operate on the litewitness database. It can be used
