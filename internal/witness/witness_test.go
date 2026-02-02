@@ -1,6 +1,7 @@
 package witness
 
 import (
+	"bytes"
 	"crypto/ed25519"
 	"encoding/base64"
 	"encoding/hex"
@@ -154,5 +155,41 @@ func fatalIfErr(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestTooManyProofs(t *testing.T) {
+	// gentest seed b4e385f4358f7373cfa9184b176f3cccf808e795baf04092ddfde9461014f0c4
+	ss := ed25519.PrivateKey(mustDecodeHex(t,
+		"31ffc2116ecbe003acaa800ab70757bd7d53206e3febef6a6d0796d95530b34f"+
+			"64848ad8abed6e85981b3b3875b252b8767ebb4b02f703aca3b1e71bbd6a8e50"))
+	w, err := NewWitness(":memory:", "example.com", ss, slog.New(testLogHandler(t)))
+	fatalIfErr(t, err)
+	t.Cleanup(func() { w.Close() })
+	origin := "sigsum.org/v1/tree/4d6d8825a6bb689d459628312889dfbb0bcd41b5211d9e1ce768b0ff0309e562"
+
+	treeHash := merkle.HashEmptyTree()
+	fatalIfErr(t, sqlitexExec(w.db, "INSERT INTO log (origin, tree_size, tree_hash) VALUES (?, 0, ?)",
+		nil, origin, base64.StdEncoding.EncodeToString(treeHash[:])))
+	pk := mustDecodeHex(t, "ffdc2d4d98e4124d3feaf788c0c2f9abfd796083d1f0495437f302ec79cf100f")
+	k, err := note.NewEd25519VerifierKey(origin, pk[:])
+	fatalIfErr(t, err)
+	fatalIfErr(t, sqlitexExec(w.db, "INSERT INTO key (origin, key) VALUES (?, ?)", nil, origin, k))
+
+	// make checkpoint with > 63 proofs
+	buf := []byte("old 0\n")
+	proofs := bytes.Repeat([]byte("KgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\n"), 64)
+	buf = append(buf, proofs...)
+	rest := []byte(`
+sigsum.org/v1/tree/4d6d8825a6bb689d459628312889dfbb0bcd41b5211d9e1ce768b0ff0309e562
+1
+KgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+
+— sigsum.org/v1/tree/4d6d8825a6bb689d459628312889dfbb0bcd41b5211d9e1ce768b0ff0309e562 UgIom7fPZTqpxWWhyjWduBvTvGVqsokMbqTArsQilegKoFBJQjUFAmQ0+YeSPM3wfUQMFSzVnnNuWRTYrajXpNUbIQY=
+`)
+	buf = append(buf, rest...)
+	_, err = w.processAddCheckpointRequest(buf, "")
+	if err == nil || err != errBadRequest {
+		t.Fatal("checkpoint with too many proofs (>63) should have failed with bad request")
 	}
 }

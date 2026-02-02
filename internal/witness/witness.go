@@ -196,6 +196,10 @@ func (w *Witness) processAddCheckpointRequest(body []byte, bastion string) (cosi
 		return nil, errBadRequest
 	}
 	l = l.With("oldSize", oldSize)
+	if len(lines[1:]) > 63 {
+		// > The client MUST NOT send more than 63 consistency proof lines.
+		return nil, errBadRequest
+	}
 	proof := make(tlog.TreeProof, len(lines[1:]))
 	for i, h := range lines[1:] {
 		proof[i], err = tlog.ParseHash(h)
