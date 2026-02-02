@@ -24,7 +24,7 @@
 - ACME now works correctly when using `-listen-http`.
 
 - Added `-tls-cert` and `-tls-key` flags to use a provided TLS certificate
-  instead of ACME.
+  instead of ACME. `-testcert` was removed.
 
 - The backends file is now allowed to be empty.
 
