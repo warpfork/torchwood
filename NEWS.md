@@ -1,14 +1,43 @@
-## v0.8.1
+## v0.9.0
+
+### torchwood
+
+- Added `FormatProof`, `FormatProofWithExtraData` and `ProofExtraData` to format
+  [c2sp.org/tlog-proof@v1][] inclusion proofs ("spicy signatures").
+
+- Added `Policy` interface and `VerifyProof`/`VerifyCheckpoint` to verify
+  proofs and checkpoints against a configurable (co)signature policy.
+
+- Added `ParsePolicy` to parse policies from a format based on the Sigsum
+  textual policies, but using vkeys instead of raw public keys.
+
+[c2sp.org/tlog-proof@v1]: https://c2sp.org/tlog-proof
+
+### tesserax
+
+- New package with a `TileReader` adapter for `tessera.LogReader`.
 
 ### litebastion
 
 - `-listen-http` now accepts `host:port` in addition to a bare port number.
 
-- ACME now works correctly then using `-listen-http`.
+- ACME now works correctly when using `-listen-http`.
+
+- Added `-tls-cert` and `-tls-key` flags to use a provided TLS certificate
+  instead of ACME.
+
+- The backends file is now allowed to be empty.
 
 ### witnessctl
 
 - `add-key` now rejects duplicate keys.
+
+- `list-logs` no longer shows duplicate keys and bastions.
+
+### age-keyserver
+
+- Added new tlog demo implementing an age keyserver (see
+  https://words.filippo.io/keyserver-tlog/).
 
 ## v0.8.0
 
