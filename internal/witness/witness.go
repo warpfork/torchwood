@@ -149,7 +149,10 @@ func (w *Witness) serveAddCheckpoint(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 	switch err {
-	case errUnknownLog, errInvalidSignature, errWrongBastion:
+	case errUnknownLog:
+		http.Error(rw, err.Error(), http.StatusNotFound)
+		return
+	case errInvalidSignature, errWrongBastion:
 		http.Error(rw, err.Error(), http.StatusForbidden)
 		return
 	case errBadRequest:

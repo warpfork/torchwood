@@ -95,7 +95,7 @@ RcCI1Nk56ZcSmIEfIn0SleqtV7uvrlXNccFx595Iwl0=
 
 — sigsum.org/v1/tree/4d6d8825a6bb689d459628312889dfbb0bcd41b5211d9e1ce768b0ff0309e563 UgIom2VbtIcdFbwFAy1n7s6IkAxIY6J/GQOTuZF2ORV39d75cbAj2aQYwyJre36kezNobZs4SUUdrcawfAB8WVrx6go=
 ```
-HTTP 403
+HTTP 404
 [Asserts]
 body contains "unknown log"
 
