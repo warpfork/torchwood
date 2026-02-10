@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"filippo.io/age"
+	"filippo.io/age/plugin"
 	"filippo.io/mostly-harmless/vrf-r255"
 	"filippo.io/torchwood"
 	"filippo.io/torchwood/tesserax"
@@ -389,7 +390,9 @@ func (s *Server) handleSetKey(w http.ResponseWriter, r *http.Request) {
 	// Validate age public key
 	var proof string
 	if pubkey != "" {
-		if _, err := age.ParseX25519Recipient(pubkey); err != nil {
+		_, err1 := age.ParseX25519Recipient(pubkey)
+		_, _, err2 := plugin.ParseRecipient(pubkey) // covers pq, tag, and plugins
+		if err1 != nil && err2 != nil {
 			http.Error(w, "Invalid age public key format", http.StatusBadRequest)
 			return
 		}

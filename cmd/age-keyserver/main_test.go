@@ -15,7 +15,6 @@ import (
 	"testing"
 	"time"
 
-	"filippo.io/age"
 	"github.com/rogpeppe/go-internal/testscript"
 )
 
@@ -105,11 +104,6 @@ func TestScript(t *testing.T) {
 				serverURL := args[0]
 				email := args[1]
 				pubkey := args[2]
-
-				// Validate the public key
-				if _, err := age.ParseX25519Recipient(pubkey); err != nil {
-					ts.Fatalf("invalid age public key: %v", err)
-				}
 
 				// HMAC file path (must be set in testscript env before starting server)
 				hmacFile := filepath.Join(ts.Getenv("WORK"), "hmac.txt")

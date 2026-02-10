@@ -3,7 +3,7 @@ module filippo.io/torchwood
 go 1.24.0
 
 require (
-	filippo.io/age v1.2.1
+	filippo.io/age v1.3.1
 	filippo.io/mostly-harmless/vrf-r255 v0.0.0-20251110151915-f587ba8b0f82
 	github.com/cheggaaa/pb/v3 v3.1.5
 	github.com/rogpeppe/go-internal v1.14.1
@@ -19,6 +19,7 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	filippo.io/hpke v0.4.0 // indirect
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -44,6 +45,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.39.0 // indirect
 	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/term v0.38.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 	golang.org/x/tools v0.39.0 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
